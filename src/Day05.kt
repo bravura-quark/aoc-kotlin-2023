@@ -13,12 +13,8 @@ fun main() {
             val sourceStart = rangeAndValue[1]
             val destinationStart = rangeAndValue[0]
             val range = rangeAndValue[2]
-//            (0..<range).forEach{
-//                map[sourceStart+it] = destinationStart+it
-//            }
             sourceDestinationRanges.add(SourceDestinationRange(sourceStart, destinationStart, range))
         }
-//        return map
         return sourceDestinationRanges
     }
 
@@ -30,26 +26,19 @@ fun main() {
         }[0]
     }
     fun processData(input: List<String>): Map<Long,Long> {
-        val seedToSoil = mutableMapOf<Long,Long>()
         val seedToSoilRange = mutableListOf<SourceDestinationRange>()
         val seedList = mutableListOf<Long>()
 
-        val soilToFertilizer = mutableMapOf<Long,Long>()
         val soilToFertilizerRange = mutableListOf<SourceDestinationRange>()
 
-        val fertilizerToWater = mutableMapOf<Long,Long>()
         val fertilizerToWaterRange = mutableListOf<SourceDestinationRange>()
 
-        val waterToLight = mutableMapOf<Long,Long>()
         val waterToLightRange = mutableListOf<SourceDestinationRange>()
 
-        val lightToTemperature =mutableMapOf<Long,Long>()
         val lightToTemperatureRange = mutableListOf<SourceDestinationRange>()
 
-        val temperatureToHumidity = mutableMapOf<Long,Long>()
         val temperatureToHumidityRange = mutableListOf<SourceDestinationRange>()
 
-        val humidityToLocation = mutableMapOf<Long,Long>()
         val humidityToLocationRange = mutableListOf<SourceDestinationRange>()
 
 
@@ -64,32 +53,26 @@ fun main() {
                     }
                 line.startsWith("soil-to-fertilizer map") ->
                     getSourceToDestination(line.split("\n")).forEach {
-//                        soilToFertilizer[it.key] = it.value
                         soilToFertilizerRange.add(it)
                     }
                 line.startsWith("fertilizer-to-water map") ->
                     getSourceToDestination(line.split("\n")).forEach {
-//                        fertilizerToWater[it.key] = it.value
                         fertilizerToWaterRange.add(it)
                     }
                 line.startsWith("water-to-light map") ->
                     getSourceToDestination(line.split("\n")).forEach {
-//                        waterToLight[it.key] = it.value
                         waterToLightRange.add(it)
                     }
                 line.startsWith("light-to-temperature map") ->
                     getSourceToDestination(line.split("\n")).forEach {
-//                        lightToTemperature[it.key] = it.value
                         lightToTemperatureRange.add(it)
                     }
                 line.startsWith("temperature-to-humidity map") ->
                     getSourceToDestination(line.split("\n")).forEach {
-//                        temperatureToHumidity[it.key] = it.value
                         temperatureToHumidityRange.add(it)
                     }
                 line.startsWith("humidity-to-location map") ->
                     getSourceToDestination(line.split("\n")).forEach {
-//                        humidityToLocation[it.key] = it.value
                         humidityToLocationRange.add(it)
                     }
             }
@@ -106,26 +89,19 @@ fun main() {
         }
     }
     fun part2(input: List<String>): Long {
-        val seedToSoil = mutableMapOf<Long, Long>()
         val seedToSoilRange = mutableListOf<SourceDestinationRange>()
         val seedList = mutableListOf<Long>()
 
-        val soilToFertilizer = mutableMapOf<Long, Long>()
         val soilToFertilizerRange = mutableListOf<SourceDestinationRange>()
 
-        val fertilizerToWater = mutableMapOf<Long, Long>()
         val fertilizerToWaterRange = mutableListOf<SourceDestinationRange>()
 
-        val waterToLight = mutableMapOf<Long, Long>()
         val waterToLightRange = mutableListOf<SourceDestinationRange>()
 
-        val lightToTemperature = mutableMapOf<Long, Long>()
         val lightToTemperatureRange = mutableListOf<SourceDestinationRange>()
 
-        val temperatureToHumidity = mutableMapOf<Long, Long>()
         val temperatureToHumidityRange = mutableListOf<SourceDestinationRange>()
 
-        val humidityToLocation = mutableMapOf<Long, Long>()
         val humidityToLocationRange = mutableListOf<SourceDestinationRange>()
 
 
@@ -181,18 +157,18 @@ fun main() {
         return (0..<seedList.size step 2).minOf {
             val seedRange = seedList[it]..<seedList[it]+seedList[it+1]
             seedRange.minOf { seed ->
-                val soil = getDestination(seedToSoilRange, seed) //seedToSoil[seed] ?: seed
-                val fertilizer = getDestination(soilToFertilizerRange, soil) // soilToFertilizer[soil] ?: soil
+                val soil = getDestination(seedToSoilRange, seed)
+                val fertilizer = getDestination(soilToFertilizerRange, soil)
                 val water =
-                    getDestination(fertilizerToWaterRange, fertilizer) // fertilizerToWater[fertilizer] ?: fertilizer
-                val light = getDestination(waterToLightRange, water) //waterToLight[water] ?: water
-                val temperature = getDestination(lightToTemperatureRange, light) // lightToTemperature[light] ?: light
+                    getDestination(fertilizerToWaterRange, fertilizer)
+                val light = getDestination(waterToLightRange, water)
+                val temperature = getDestination(lightToTemperatureRange, light)
                 val humidity = getDestination(
                     temperatureToHumidityRange,
                     temperature
-                ) // temperatureToHumidity[temperature] ?: temperature
+                )
                 val location =
-                    getDestination(humidityToLocationRange, humidity) // humidityToLocation[humidity] ?: humidity
+                    getDestination(humidityToLocationRange, humidity)
                 location?:0L
             }
         }
