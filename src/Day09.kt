@@ -1,40 +1,30 @@
 import java.util.Stack
 
 fun main() {
-    fun part1NextItem(list: List<Int>): Int {
-        val stack = Stack<List<Int>>()
-        stack.push(list)
-        var elements = list
-        while(!elements.all { it == 0 }) {
-            elements = elements.windowed(2).map { it[1] - it[0] }
-            stack.push(elements)
-        }
-        var nextElement = 0
-        while (!stack.empty()) {
-            nextElement += stack.pop()!!.last()
-        }
-        return nextElement
-    }
-    fun part2NextItem(list: List<Int>): Int {
-        val stack = Stack<List<Int>>()
-        stack.push(list)
-        var elements = list
-        while(!elements.all { it == 0 }) {
-            elements = elements.windowed(2).map { it[1] - it[0] }
-            stack.push(elements)
-        }
-        var nextElement = 0
-        while (!stack.empty()) {
-            nextElement = stack.pop()!!.first() - nextElement
-        }
-        return nextElement
+    fun nextItem(list: List<Int>): Int {
+        // Recursive solution
+        if (list.all { it == 0 }) return 0
+        val diffs = list.windowed(2).map { it[1] - it[0] }
+        return list.last() + nextItem(diffs)
+
+        // Iterative solution
+//        val stack = Stack<List<Int>>()
+//        stack.push(list)
+//        var elements = list
+//        while(!elements.all { it == 0 }) {
+//            elements = elements.windowed(2).map { it[1] - it[0] }
+//            stack.push(elements)
+//        }
+//        val element = stack.fold(0) {acc, lst ->
+//            acc + lst.last()}
+//        return element
     }
 
     fun part1(input: List<String>): Int {
-        return input.sumOf { str -> part1NextItem(str.split("\\s+".toRegex()).map { it.toInt() }) }
+        return input.sumOf { str -> nextItem(str.split("\\s+".toRegex()).map { it.toInt() }) }
     }
     fun part2(input: List<String>): Int {
-        return input.sumOf { str -> part2NextItem(str.split("\\s+".toRegex()).map { it.toInt() }) }
+        return input.sumOf { str -> nextItem(str.split("\\s+".toRegex()).map { it.toInt() }.reversed()) }
     }
     val testInput = readInput("Day09_test")
     check(part1(testInput) == 114)
